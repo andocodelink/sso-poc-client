@@ -14,7 +14,7 @@ class Navigation extends React.Component {
       <Navbar fluid collapseOnSelect>
         <Navbar.Header>
           <Navbar.Brand>
-            <Link to="/">Codelink SSO - POC</Link>
+            <Link to="/">CodeSSO</Link>
           </Navbar.Brand>
           <Navbar.Toggle />
         </Navbar.Header>
