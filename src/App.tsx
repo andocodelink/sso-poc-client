@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 
-import logo from './logo.svg';
 import ScreensRoot from './screens/Root';
+import * as session from './libs/session'
 
 import './App.css';
 
@@ -11,43 +11,31 @@ class App extends Component {
     super(props);
 
     this.state = {
-      isAuthenticated: false,
-      isAuthenticating: true
+      isAuthenticating: true,
+      isAuthenticated: false
     };
   }
 
   async componentDidMount() {
-    try {
-      this.userHasAuthenticated(true);
-    }
-    catch (e) {
-      if (e !== 'No current user') {
-        alert(e);
-      }
-    }
-
-    this.setState({ isAuthenticating: false });
+    session.getCurrentSession();
+    this.setState({ isAuthenticating: false, isAuthenticated: session.isAuthenticated() });
   }
 
-  userHasAuthenticated = authenticated => {
-    this.setState({ isAuthenticated: authenticated });
+  authenticationUpdateHandle = () => {
+    this.setState({
+      isAuthenticated: session.isAuthenticated()
+    }) 
   }
 
-  handleLogout = async () => {
-    this.userHasAuthenticated(false);
-    this.props.history.push('/login');
+  componentWillMount() {
+    session.setAuthenticationUpdateListener(this.authenticationUpdateHandle);
   }
 
   render() {
-    const childProps = {
-      isAuthenticated: this.state.isAuthenticated,
-      userHasAuthenticated: this.userHasAuthenticated
-    }
-
     return (
       !this.state.isAuthenticating &&
       <div className="App container">
-        <ScreensRoot childProps={childProps} />
+        <ScreensRoot childProps={{ isAuthenticated: this.state.isAuthenticated }} />
       </div>
     );
   }

@@ -3,10 +3,11 @@ import { Link } from 'react-router-dom';
 import { Navbar, Nav, NavItem } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 
+import { logout } from '../../libs/session'
+
 class Navigation extends React.Component {
   handleLogout = async () => {
-    this.props.userHasAuthenticated(false);
-    this.props.history.push('/login');
+    logout()
   }
 
   render() {

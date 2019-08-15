@@ -3,13 +3,13 @@
     padding: 60px 0;
   }
 
-  .Login form {
+  .Login .LoaderButton {
     margin: 0 auto;
     max-width: 320px;
   }
 }
 
-.Login form span.help-block {
+.Login .LoaderButton span.help-block {
   font-size: 14px;
   padding-bottom: 10px;
   color: #999;
