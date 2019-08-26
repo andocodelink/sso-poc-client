@@ -1,7 +1,15 @@
 import React from "react";
 import "./index.css";
+import * as session from '../../libs/session';
 
-export default () =>
-  <div className="NotFound">
-    <h3>Sorry, page not found!</h3>
-  </div>;
+class NotFound extends React.Component {
+  render() {
+    return (
+      <div className="NotFound">
+        <h3>Hello, {session.getLocal(session.LOCAL_KEYS.ACCESS_TOKEN_KEY)}</h3>
+      </div>
+    )
+  }
+}
+
+export default NotFound;

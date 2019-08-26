@@ -20,11 +20,11 @@ export const login= async () => {
     return data.access_token;
   }
 
-  throw new Error(data.status || 'error');
+  throw new Error('error');
 }
 
 export const loginWithCodelink = async () => {
-  const res = await fetch(API_ROOT + '/login-sso', {
+  const res = await fetch(API_ROOT + '/login-sso?redirect=' + encodeURIComponent('ssoCallback'), {
     redirect: 'follow',
     method: 'GET'
   })
@@ -36,7 +36,7 @@ export const loginWithCodelink = async () => {
     return data.access_token;
   }
 
-  throw new Error(data.status || 'error');
+  throw new Error('error');
 }
 
 export const getSession = async () => {
@@ -47,7 +47,7 @@ export const getSession = async () => {
     return data.access_token;
   }
 
-  throw new Error(data.status || 'error');
+  throw new Error('error');
 }
 
 export const logout = async () => {
@@ -60,5 +60,17 @@ export const logout = async () => {
     }
   }
 
-  throw new Error(data.status || 'error');
+  throw new Error('error');
+}
+
+export const ssoCallback = async (ssoToken) => {
+  const res = await fetch(API_ROOT + '/ssoCallback?ssoToken=' + encodeURIComponent(ssoToken), {
+    method: 'GET'
+  })
+  if (res.status == 200) {
+    const data = await res.json();
+    return data;
+  }
+
+  throw new Error('error');
 }

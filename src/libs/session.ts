@@ -66,3 +66,16 @@ export const logout = async () => {
 export const isAuthenticated = () => {
    return !!getLocal(LOCAL_KEYS.ACCESS_TOKEN_KEY)
 }
+
+export const ssoCallback = async (ssoToken) => {
+  try {
+    const ssoUserToken = await apis.ssoCallback(ssoToken)
+    if (ssoUserToken.user_token && ssoUserToken.sso_user) {
+      alert('SSO logged in: user token: ' + ssoUserToken.user_token  + ' & user email: ' + ssoUserToken.sso_user.email)
+    }
+    setLocal(LOCAL_KEYS.ACCESS_TOKEN_KEY, ssoUserToken.user_token)
+  } catch (err) {
+    removeLocal(LOCAL_KEYS.ACCESS_TOKEN_KEY)
+  }
+  notifyAuthenUpdateListener()
+}

@@ -3,11 +3,40 @@ import { Link } from 'react-router-dom';
 import { Navbar, Nav, NavItem } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 
-import { logout } from '../../libs/session'
+import { logout, ssoCallback } from '../../libs/session'
+
+const isSSOCallback = () => {
+  let url = window.location.href
+  return !!url.includes('/ssoCallback')
+}
+
+const getSSOToken = () => {
+  let url = window.location.href
+  const name = 'ssoToken'
+
+  const regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)", "i");
+  const results = regex.exec(url);
+
+  if (!results) {
+    return null;
+  }
+  if (!results[2]) {
+    return "";
+  }
+
+  return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
 
 class Navigation extends React.Component {
   handleLogout = async () => {
     logout()
+  }
+
+  async componentDidMount() {
+    if (isSSOCallback()) {
+      const ssoToken =  getSSOToken();
+      const ssoUserToken = await ssoCallback(ssoToken);
+    }
   }
 
   render() {
